@@ -19,14 +19,19 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
+    protected static ?string $navigationLabel = 'Categorias';
     protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
-    protected static ?string $navigationGroup = 'System Management';
+    protected static ?string $navigationGroup = 'Administrador del sistema';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('description')->required()->maxLength(100)
+                TextInput::make('description')
+                    ->required()
+                    ->maxLength(100)
+                    ->label('Descripción')
+
             ]);
     }
 
@@ -34,9 +39,19 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('description')->searchable(),
-                TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault:true),
-                TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault:true),
+                TextColumn::make('description')
+                    ->searchable()
+                    ->label('Descripción'),
+                TextColumn::make('created_at')
+                    ->label('Fecha creación')
+                    ->dateTime('d-m-y H:i:s')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault:true),
+                TextColumn::make('updated_at')
+                    ->label('Fecha actualización')
+                    ->dateTime('d-m-y H:i:s')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault:true),
             ])
             ->filters([
                 //

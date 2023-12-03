@@ -17,8 +17,9 @@ class StateResource extends Resource
 {
     protected static ?string $model = State::class;
 
+    protected static ?string $navigationLabel = 'Estado de componente';
     protected static ?string $navigationIcon = 'heroicon-o-puzzle-piece';
-    protected static ?string $navigationGroup = 'System Management';
+    protected static ?string $navigationGroup = 'Administrador del sistema';
 
     public static function form(Form $form): Form
     {
@@ -26,7 +27,8 @@ class StateResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('description')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Descripción'),
             ]);
     }
 
@@ -35,13 +37,16 @@ class StateResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Descripción'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Fecha creación')
+                    ->dateTime('d-m-y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Fecha actualización')
+                    ->dateTime('d-m-y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -14,12 +14,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\ComponentResource\Widgets\ComponentStatsOverview;
 
 
 class ComponentResource extends Resource
 {
     protected static ?string $model = Component::class;
 
+    protected static ?string $navigationLabel = 'Componentes';
     protected static ?string $navigationIcon = 'heroicon-o-tv';
     // protected static ?string $navigationGroup = 'System Management';
 
@@ -31,36 +33,44 @@ class ComponentResource extends Resource
                     ->relationship('categories', 'description')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->label('Categoría'),
                 Forms\Components\Select::make('brands_id')
                     ->relationship('brands', 'description')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->label('Marca'),
                 Forms\Components\Select::make('departments_id')
                     ->relationship('departments', 'description')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->label('Departamento'),
                 Forms\Components\Select::make('locations_id')
                     ->relationship('locations', 'description')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->label('Localidad'),
                 Forms\Components\Select::make('states_id')
                     ->relationship('states', 'description')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->label('Estado físico'),
                 Forms\Components\TextInput::make('description')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Descripción'),
                 Forms\Components\TextInput::make('serial')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Serial original'),
                 Forms\Components\TextInput::make('asset_number')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Nº Bien Nacional'),
             ]);
     }
 
@@ -71,38 +81,48 @@ class ComponentResource extends Resource
                 Tables\Columns\TextColumn::make('categories.description')
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Categoría'),
                 Tables\Columns\TextColumn::make('brands.description')
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Marca'),
                 Tables\Columns\TextColumn::make('departments.description')
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Departamento'),
                 Tables\Columns\TextColumn::make('locations.description')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault:true)
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Localidad'),
                 Tables\Columns\TextColumn::make('states.description')
                     ->numeric()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Estado físico'),
                 Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Descripción'),
                 Tables\Columns\TextColumn::make('serial')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Serial'),
                 Tables\Columns\TextColumn::make('asset_number')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Nº B/N'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-m-y H:i:s')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Fecha creación'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-m-y H:i:s')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Fecha actualización'),
             ])
             ->filters([
                 SelectFilter::make('departments')
@@ -124,6 +144,13 @@ class ComponentResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ComponentStatsOverview::class
         ];
     }
 

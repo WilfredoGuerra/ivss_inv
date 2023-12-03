@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
@@ -22,8 +23,9 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
+    protected static ?string $navigationLabel = 'Usuarios';
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationGroup = 'Administrador de usuarios';
 
     public static function form(Form $form): Form
     {
@@ -48,7 +50,16 @@ class UserResource extends Resource
                     ->label('Password Confirmation')
                     ->required(fn (Page $livewire): bool => $livewire instanceOf CreateRecord)
                     ->minLength(8)
-                    ->dehydrated(false)
+                    ->dehydrated(false),
+                Select::make('roles')
+                    ->multiple()
+                    ->preload()
+                    ->relationship('roles', 'name'),
+                Select::make('permissions')
+                    ->multiple()
+                    ->preload()
+                    ->relationship('permissions', 'name')
+
             ]);
     }
 
@@ -56,10 +67,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable(),
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('email')->sortable()->searchable(),
-                TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('id')->sortable()->label('Id'),
+                TextColumn::make('name')->sortable()->searchable()->label('Nombre'),
+                TextColumn::make('email')->sortable()->searchable()->label('Correo'),
+                TextColumn::make('created_at')->dateTime('d-m-y H:i:s')->label('Fecha creación'),
             ])
             ->filters([
                 //
@@ -69,9 +80,9 @@ class UserResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //Tables\Actions\BulkActionGroup::make([
+                    //Tables\Actions\DeleteBulkAction::make(),
+                //]),
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),

@@ -1,6 +1,6 @@
 
 <img
-    src="{{ asset('images/ivss.png') }}"
+    src="{{ asset('images/logo_ivss.png') }}"
     alt="logo_ivss"
     class="h-16">
 

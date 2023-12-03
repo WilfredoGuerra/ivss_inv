@@ -4,6 +4,7 @@ namespace App\Filament\Resources\LocationResource\Pages;
 
 use App\Filament\Resources\LocationResource;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateLocation extends CreateRecord
@@ -13,5 +14,13 @@ class CreateLocation extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Localización registrada')
+            ->body('La Localización fue registrada exitosamente!!!');
     }
 }
